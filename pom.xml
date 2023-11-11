@@ -21,6 +21,8 @@
         <java.version>17</java.version>
         <swagger.version>2.2.15</swagger.version>
         <springdoc.version>2.2.0</springdoc.version>
+        <faker.version>1.0.2</faker.version>
+        <junit.version>4.13.2</junit.version>
     </properties>
 
     <dependencies>
@@ -64,6 +66,12 @@
             <groupId>org.springframework.restdocs</groupId>
             <artifactId>spring-restdocs-mockmvc</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>${faker.version}</version>
         </dependency>
 
         <dependency>
