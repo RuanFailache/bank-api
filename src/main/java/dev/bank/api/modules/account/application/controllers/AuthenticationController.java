@@ -24,7 +24,6 @@ public class AuthenticationController implements AuthenticationControllerDocs {
         this.authenticationService = authenticationService;
     }
 
-    @Override
     @PostMapping("send")
     public ResponseEntity<SentValidationCodeResponseDto> postAuthSend(
             @RequestBody
@@ -36,7 +35,6 @@ public class AuthenticationController implements AuthenticationControllerDocs {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @Override
     @PostMapping("validate")
     public ResponseEntity<CredentialsResponseDto> postAuthValidate(
             @RequestBody
