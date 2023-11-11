@@ -17,13 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController implements AuthenticationControllerDocs {
     @Override
     @PostMapping("send")
-    public ResponseEntity<LoggedAccountResponseDto> postAuthSend(@RequestBody @Valid SendValidationCodeRequestDto requestBody) {
+    public ResponseEntity<LoggedAccountResponseDto> postAuthSend(
+            @RequestBody
+            @Valid SendValidationCodeRequestDto requestBody
+    ) {
         return null;
     }
 
     @Override
     @PostMapping("validate")
-    public ResponseEntity<LoggedAccountResponseDto> postAuthValidate(@RequestBody @Valid ValidateCodeRequestDto requestBody) {
+    public ResponseEntity<LoggedAccountResponseDto> postAuthValidate(
+            @RequestBody
+            @Valid ValidateCodeRequestDto requestBody
+    ) {
         return null;
     }
 }
