@@ -1,7 +1,8 @@
 package dev.bank.api.modules.account.infra.docs;
 
-import dev.bank.api.modules.account.application.dtos.LoggedAccountResponseDto;
+import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
+import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.application.dtos.ValidateCodeRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +21,7 @@ public interface AuthenticationControllerDocs {
                             description = "Email sent successfully",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = LoggedAccountResponseDto.class)
+                                    schema = @Schema(implementation = SentValidationCodeResponseDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -30,7 +31,7 @@ public interface AuthenticationControllerDocs {
                     )
             }
     )
-    ResponseEntity<LoggedAccountResponseDto> postAuthSend(SendValidationCodeRequestDto requestBody);
+    ResponseEntity<SentValidationCodeResponseDto> postAuthSend(SendValidationCodeRequestDto requestBody);
 
     @Operation(
             summary = "Validate authentication code",
@@ -40,7 +41,7 @@ public interface AuthenticationControllerDocs {
                             description = "Account authenticated successfully",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = LoggedAccountResponseDto.class)
+                                    schema = @Schema(implementation = CredentialsResponseDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -50,5 +51,5 @@ public interface AuthenticationControllerDocs {
                     )
             }
     )
-    ResponseEntity<LoggedAccountResponseDto> postAuthValidate(ValidateCodeRequestDto requestBody);
+    ResponseEntity<CredentialsResponseDto> postAuthValidate(ValidateCodeRequestDto requestBody);
 }

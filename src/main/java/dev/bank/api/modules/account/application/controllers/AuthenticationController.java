@@ -1,11 +1,14 @@
 package dev.bank.api.modules.account.application.controllers;
 
-import dev.bank.api.modules.account.application.dtos.LoggedAccountResponseDto;
+import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
+import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.application.dtos.ValidateCodeRequestDto;
+import dev.bank.api.modules.account.application.services.AuthenticationService;
 import dev.bank.api.modules.account.infra.docs.AuthenticationControllerDocs;
 
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,21 +18,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController implements AuthenticationControllerDocs {
+    private final AuthenticationService authenticationService;
+
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
     @Override
     @PostMapping("send")
-    public ResponseEntity<LoggedAccountResponseDto> postAuthSend(
+    public ResponseEntity<SentValidationCodeResponseDto> postAuthSend(
             @RequestBody
             @Valid SendValidationCodeRequestDto requestBody
     ) {
-        return null;
+        var response = authenticationService.sendValidationCode(
+                requestBody.email()
+        );
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @Override
     @PostMapping("validate")
-    public ResponseEntity<LoggedAccountResponseDto> postAuthValidate(
+    public ResponseEntity<CredentialsResponseDto> postAuthValidate(
             @RequestBody
             @Valid ValidateCodeRequestDto requestBody
     ) {
-        return null;
+        var response = authenticationService.validateAuthenticationCode(
+                requestBody.idValidationRequest(),
+                requestBody.code()
+        );
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
