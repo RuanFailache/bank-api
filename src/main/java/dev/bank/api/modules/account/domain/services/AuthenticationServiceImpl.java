@@ -8,6 +8,7 @@ import dev.bank.api.modules.account.infra.database.entities.ValidationCode;
 import dev.bank.api.modules.account.infra.database.repositories.AccountRepository;
 import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
@@ -17,9 +18,14 @@ import java.util.Random;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    private ValidationCodeRepository validationCodeRepository;
+    private final ValidationCodeRepository validationCodeRepository;
+
+    public AuthenticationServiceImpl(AccountRepository accountRepository, ValidationCodeRepository validationCodeRepository) {
+        this.accountRepository = accountRepository;
+        this.validationCodeRepository = validationCodeRepository;
+    }
 
     /**
      * Generates a random code with 6 digits

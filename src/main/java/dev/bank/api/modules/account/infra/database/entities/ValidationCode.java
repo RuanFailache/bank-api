@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static java.util.Objects.isNull;
 
@@ -13,9 +14,9 @@ import static java.util.Objects.isNull;
 @Table(name = "TAB_VALIDATION_CODES")
 public class ValidationCode {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "TVC_ID")
-    private String id;
+    private UUID id;
 
     @Column(name = "TVC_CODE")
     private String code;

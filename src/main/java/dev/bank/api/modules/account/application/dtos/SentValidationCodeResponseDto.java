@@ -9,7 +9,7 @@ public class SentValidationCodeResponseDto {
 
     static public SentValidationCodeResponseDto from(ValidationCode validationCode) {
         var dto = new SentValidationCodeResponseDto();
-        dto.setIdValidationRequest(validationCode.getId());
+        dto.setIdValidationRequest(validationCode.getId().toString());
         return dto;
     }
 }

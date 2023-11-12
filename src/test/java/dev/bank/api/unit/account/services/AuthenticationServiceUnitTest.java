@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +40,7 @@ public class AuthenticationServiceUnitTest {
 
     private void mockSaveValidationCode() {
         ValidationCode fakeValidationCode = new ValidationCode();
-        fakeValidationCode.setId(faker.internet().uuid());
+        fakeValidationCode.setId(UUID.randomUUID());
         fakeValidationCode.setCode(faker.number().digits(6));
         when(validationCodeRepository.save(any())).thenReturn(fakeValidationCode);
     }

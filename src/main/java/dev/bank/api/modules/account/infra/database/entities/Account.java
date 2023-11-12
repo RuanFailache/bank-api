@@ -7,15 +7,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "TAB_ACCOUNTS")
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "TA_ID")
-    private String id;
+    private UUID id;
 
     @Column(name = "TA_EMAIL", nullable = false, unique = true)
     private String email;
