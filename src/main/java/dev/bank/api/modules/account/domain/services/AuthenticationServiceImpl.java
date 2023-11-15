@@ -1,20 +1,27 @@
 package dev.bank.api.modules.account.domain.services;
 
+import dev.bank.api.core.exceptions.HttpRequestException;
 import dev.bank.api.core.services.MailSenderService;
+
+import dev.bank.api.core.exceptions.NotFoundException;
+
 import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.application.services.AuthenticationService;
+
 import dev.bank.api.modules.account.infra.database.entities.Account;
 import dev.bank.api.modules.account.infra.database.entities.ValidationCode;
 import dev.bank.api.modules.account.infra.database.repositories.AccountRepository;
 import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRepository;
+
 import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -88,10 +95,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      *
      * @return Credentials of the created session
      *
-     * @throws NotFound : When the validation request is not found
+     * @throws NotFoundException : When the validation request is not found
      * @throws Unauthorized : When the code is invalid
      */
-    public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) {
+    public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) throws NotFoundException {
+        UUID castedIdValidationRequest = UUID.fromString(idValidationRequest);
+
+        ValidationCode validationCode = validationCodeRepository
+                .findById(castedIdValidationRequest)
+                .orElseThrow(() -> new NotFoundException(""));
+
         return null;
     }
 }

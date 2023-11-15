@@ -1,6 +1,7 @@
 package dev.bank.api.modules.account.unit;
 
 import com.github.javafaker.Faker;
+import dev.bank.api.core.exceptions.NotFoundException;
 import dev.bank.api.core.services.MailSenderService;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.infra.database.entities.Account;
@@ -106,5 +107,18 @@ public class AuthenticationServiceTest {
         var result = sut.sendValidationCode(faker.internet().emailAddress());
 
         assertInstanceOf(SentValidationCodeResponseDto.class, result);
+    }
+
+    @Test
+    @DisplayName("Should ensure 'validateAuthenticationCode' throws NotFoundException when 'idValidationRequest' is not found")
+    void testValidateAuthenticationCode_When_IdValidationRequestNotFound() {
+        String fakeId = faker.internet().uuid();
+        String fakeCode = faker.number().digits(6);
+        try {
+            sut.validateAuthenticationCode(fakeId, fakeCode);
+            fail("Should throws NotFoundException");
+        } catch (Exception e) {
+            assertInstanceOf(NotFoundException.class, e);
+        }
     }
 }
