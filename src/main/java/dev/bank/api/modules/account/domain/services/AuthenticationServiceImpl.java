@@ -1,5 +1,6 @@
 package dev.bank.api.modules.account.domain.services;
 
+import dev.bank.api.core.services.MailSenderService;
 import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.application.services.AuthenticationService;
@@ -7,6 +8,7 @@ import dev.bank.api.modules.account.infra.database.entities.Account;
 import dev.bank.api.modules.account.infra.database.entities.ValidationCode;
 import dev.bank.api.modules.account.infra.database.repositories.AccountRepository;
 import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRepository;
+import jakarta.mail.internet.AddressException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final ValidationCodeRepository validationCodeRepository;
 
-    public AuthenticationServiceImpl(AccountRepository accountRepository, ValidationCodeRepository validationCodeRepository) {
+    private final MailSenderService mailSenderService;
+
+    public AuthenticationServiceImpl(
+            AccountRepository accountRepository,
+            ValidationCodeRepository validationCodeRepository,
+            MailSenderService mailSenderService
+    ) {
         this.accountRepository = accountRepository;
         this.validationCodeRepository = validationCodeRepository;
+        this.mailSenderService = mailSenderService;
     }
 
     /**
@@ -64,7 +73,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         model.setAccount(account);
         ValidationCode validationCode = validationCodeRepository.save(model);
 
-        // TODO: send email with validation code
+        mailSenderService.sendMail(
+                email,
+                "[BANK] Seu código de confirmação",
+                "Seu código de confirmação é %s".formatted(generatedCode)
+        );
 
         return SentValidationCodeResponseDto.from(validationCode);
     }

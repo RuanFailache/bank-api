@@ -12,6 +12,15 @@ spring:
     database-platform: ${secrets.jpa.platform}
     hibernate.ddl-auto: ${secrets.jpa.mode}
 
+  mail:
+    host: ${secrets.mail.host}
+    port: ${secrets.mail.port}
+    username: ${secrets.mail.username}
+    password: ${secrets.mail.password}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
 server:
   error:
     include-stacktrace: never

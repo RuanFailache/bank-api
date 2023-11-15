@@ -9,3 +9,9 @@ secrets:
   jpa:
     platform:
     mode:
+
+  mail:
+    host:
+    port:
+    username:
+    password:

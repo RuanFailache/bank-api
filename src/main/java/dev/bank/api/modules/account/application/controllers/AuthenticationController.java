@@ -7,6 +7,7 @@ import dev.bank.api.modules.account.application.dtos.ValidateCodeRequestDto;
 import dev.bank.api.modules.account.application.services.AuthenticationService;
 import dev.bank.api.modules.account.infra.docs.AuthenticationControllerDocs;
 
+import jakarta.mail.internet.AddressException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

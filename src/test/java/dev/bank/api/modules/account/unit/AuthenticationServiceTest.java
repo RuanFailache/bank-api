@@ -1,12 +1,14 @@
 package dev.bank.api.modules.account.unit;
 
 import com.github.javafaker.Faker;
+import dev.bank.api.core.services.MailSenderService;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.infra.database.entities.Account;
 import dev.bank.api.modules.account.infra.database.entities.ValidationCode;
 import dev.bank.api.modules.account.infra.database.repositories.AccountRepository;
 import dev.bank.api.modules.account.domain.services.AuthenticationServiceImpl;
 import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRepository;
+import jakarta.mail.internet.AddressException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
@@ -33,6 +36,9 @@ public class AuthenticationServiceTest {
     @Mock
     private ValidationCodeRepository validationCodeRepository;
 
+    @Mock
+    private MailSenderService mailSenderService;
+
     @BeforeAll
     static void setup() {
         faker = new Faker();
@@ -43,6 +49,7 @@ public class AuthenticationServiceTest {
         fakeValidationCode.setId(UUID.randomUUID());
         fakeValidationCode.setCode(faker.number().digits(6));
         when(validationCodeRepository.save(any())).thenReturn(fakeValidationCode);
+        doNothing().when(mailSenderService).sendMail(anyString(), anyString(), anyString());
     }
 
     @Test
@@ -73,13 +80,23 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    @DisplayName("Should ensure 'sendValidationCode' after generating a code, saves the generated code")
+    @DisplayName("Should ensure 'sendValidationCode' saves the validation code")
     void testSendValidationCode_When_SavesValidationCode() {
         mockSaveValidationCode();
 
         sut.sendValidationCode(faker.internet().emailAddress());
 
         verify(validationCodeRepository, atLeastOnce()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should ensure 'sendValidationCode' sends an email")
+    void testSendValidationCode_When_SendsAnEmail() {
+        mockSaveValidationCode();
+
+        sut.sendValidationCode(faker.internet().emailAddress());
+
+        verify(mailSenderService, atLeastOnce()).sendMail(anyString(), anyString(), anyString());
     }
 
     @Test
