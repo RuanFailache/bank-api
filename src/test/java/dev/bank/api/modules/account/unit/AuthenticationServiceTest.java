@@ -8,7 +8,6 @@ import dev.bank.api.modules.account.infra.database.entities.ValidationCode;
 import dev.bank.api.modules.account.infra.database.repositories.AccountRepository;
 import dev.bank.api.modules.account.domain.services.AuthenticationServiceImpl;
 import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRepository;
-import jakarta.mail.internet.AddressException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 
@@ -48,7 +46,8 @@ public class AuthenticationServiceTest {
         ValidationCode fakeValidationCode = new ValidationCode();
         fakeValidationCode.setId(UUID.randomUUID());
         fakeValidationCode.setCode(faker.number().digits(6));
-        when(validationCodeRepository.save(any())).thenReturn(fakeValidationCode);
+        doReturn(fakeValidationCode).when(validationCodeRepository).save(any());
+
         doNothing().when(mailSenderService).sendMail(anyString(), anyString(), anyString());
     }
 
