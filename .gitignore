@@ -33,4 +33,7 @@ build/
 .vscode/
 
 ### Secrets ###
-**/application-*.yml
+**/application-local.yml
+**/application-dev.yml
+**/application-hom.yml
+**/application-prod.yml

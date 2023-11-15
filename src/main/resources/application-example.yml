@@ -1,0 +1,11 @@
+#file: noinspection SpringBootApplicationYaml
+secrets:
+  database:
+    driver:
+    url:
+    username:
+    password:
+
+  jpa:
+    platform:
+    mode:

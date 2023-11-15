@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: local
+
   datasource:
     driverClassName: ${secrets.database.driver}
     url: ${secrets.database.url}
