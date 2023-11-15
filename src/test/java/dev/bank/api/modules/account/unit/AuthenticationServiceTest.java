@@ -2,6 +2,7 @@ package dev.bank.api.modules.account.unit;
 
 import com.github.javafaker.Faker;
 import dev.bank.api.core.exceptions.NotFoundException;
+import dev.bank.api.core.exceptions.UnauthorizedException;
 import dev.bank.api.core.services.MailSenderService;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.infra.database.entities.Account;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -114,11 +116,39 @@ public class AuthenticationServiceTest {
     void testValidateAuthenticationCode_When_IdValidationRequestNotFound() {
         String fakeId = faker.internet().uuid();
         String fakeCode = faker.number().digits(6);
+
+        UUID castedFakeId = UUID.fromString(fakeId);
+
+        doReturn(Optional.empty()).when(validationCodeRepository).findById(castedFakeId);
+
         try {
             sut.validateAuthenticationCode(fakeId, fakeCode);
             fail("Should throws NotFoundException");
         } catch (Exception e) {
             assertInstanceOf(NotFoundException.class, e);
+        }
+    }
+
+    @Test
+    @DisplayName("Should ensure 'validateAuthenticationCode' throws UnauthorizedException when 'code' is incorrect")
+    void testValidateAuthenticationCode_When_CodeIsIncorrect() {
+        String fakeId = faker.internet().uuid();
+        String fakeCode = faker.number().digits(6);
+        String otherFakeCode = faker.number().digits(6);
+
+        UUID castedFakeId = UUID.fromString(fakeId);
+
+        ValidationCode validationCode = new ValidationCode();
+        validationCode.setId(castedFakeId);
+        validationCode.setCode(fakeCode);
+
+        doReturn(Optional.of(validationCode)).when(validationCodeRepository).findById(castedFakeId);
+
+        try {
+            sut.validateAuthenticationCode(fakeId, otherFakeCode);
+            fail("Should throws UnauthorizedException");
+        } catch (Exception e) {
+            assertInstanceOf(UnauthorizedException.class, e);
         }
     }
 }

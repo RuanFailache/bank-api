@@ -1,6 +1,7 @@
 package dev.bank.api.modules.account.domain.services;
 
 import dev.bank.api.core.exceptions.HttpRequestException;
+import dev.bank.api.core.exceptions.UnauthorizedException;
 import dev.bank.api.core.services.MailSenderService;
 
 import dev.bank.api.core.exceptions.NotFoundException;
@@ -19,6 +20,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -98,12 +100,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @throws NotFoundException : When the validation request is not found
      * @throws Unauthorized : When the code is invalid
      */
-    public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) throws NotFoundException {
+    public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) throws HttpRequestException {
         UUID castedIdValidationRequest = UUID.fromString(idValidationRequest);
 
         ValidationCode validationCode = validationCodeRepository
                 .findById(castedIdValidationRequest)
                 .orElseThrow(() -> new NotFoundException(""));
+
+        if (!validationCode.getCode().equals(code)) throw new UnauthorizedException("");
 
         return null;
     }

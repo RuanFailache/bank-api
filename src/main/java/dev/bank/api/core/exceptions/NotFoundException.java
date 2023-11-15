@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class NotFoundException extends HttpRequestException {
     public NotFoundException(String message) {
-        super(message, HttpStatus.BAD_REQUEST);
+        super(message, HttpStatus.NOT_FOUND);
     }
 }

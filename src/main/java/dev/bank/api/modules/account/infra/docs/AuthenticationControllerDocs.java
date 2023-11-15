@@ -1,6 +1,8 @@
 package dev.bank.api.modules.account.infra.docs;
 
+import dev.bank.api.core.exceptions.HttpRequestException;
 import dev.bank.api.core.exceptions.NotFoundException;
+import dev.bank.api.core.exceptions.UnauthorizedException;
 import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
@@ -53,5 +55,5 @@ public interface AuthenticationControllerDocs {
                     )
             }
     )
-    ResponseEntity<CredentialsResponseDto> postAuthValidate(ValidateCodeRequestDto requestBody) throws NotFoundException;
+    ResponseEntity<CredentialsResponseDto> postAuthValidate(ValidateCodeRequestDto requestBody) throws HttpRequestException;
 }
