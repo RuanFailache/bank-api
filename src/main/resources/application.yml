@@ -1,13 +1,13 @@
 spring:
   datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:bank
-    username: sa
-    password:
+    driverClassName: ${secrets.database.driver}
+    url: ${secrets.database.url}
+    username: ${secrets.database.username}
+    password: ${secrets.database.password}
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate.ddl-auto: update
+    database-platform: ${secrets.jpa.platform}
+    hibernate.ddl-auto: ${secrets.jpa.mode}
 
 server:
   error:

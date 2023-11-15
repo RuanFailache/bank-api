@@ -1,6 +1,6 @@
-package dev.bank.api.integration.account;
+package dev.bank.api.modules.account.integration;
 
-import dev.bank.api.protocols.IntegrationTest;
+import dev.bank.api.shared.protocols.IntegrationTest;
 import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;

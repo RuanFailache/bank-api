@@ -1,4 +1,4 @@
-package dev.bank.api.unit.account.services;
+package dev.bank.api.modules.account.unit;
 
 import com.github.javafaker.Faker;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
@@ -21,11 +21,11 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthenticationServiceUnitTest {
+public class AuthenticationServiceTest {
     static Faker faker;
 
     @InjectMocks
-    private AuthenticationServiceImpl authenticationService;
+    private AuthenticationServiceImpl sut;
 
     @Mock
     private AccountRepository accountRepository;
@@ -52,7 +52,7 @@ public class AuthenticationServiceUnitTest {
 
         var email = faker.internet().emailAddress();
 
-        authenticationService.sendValidationCode(email);
+        sut.sendValidationCode(email);
 
         verify(accountRepository, atLeastOnce()).findAccountByEmail(email);
     }
@@ -67,7 +67,7 @@ public class AuthenticationServiceUnitTest {
         var account = new Account();
         account.setEmail(email);
 
-        authenticationService.sendValidationCode(email);
+        sut.sendValidationCode(email);
 
         verify(accountRepository, atLeastOnce()).save(account);
     }
@@ -77,7 +77,7 @@ public class AuthenticationServiceUnitTest {
     void testSendValidationCode_When_SavesValidationCode() {
         mockSaveValidationCode();
 
-        authenticationService.sendValidationCode(faker.internet().emailAddress());
+        sut.sendValidationCode(faker.internet().emailAddress());
 
         verify(validationCodeRepository, atLeastOnce()).save(any());
     }
@@ -87,7 +87,7 @@ public class AuthenticationServiceUnitTest {
     void testSendValidationCode_When_ReturnsSuccessfully() {
         mockSaveValidationCode();
 
-        var result = authenticationService.sendValidationCode(faker.internet().emailAddress());
+        var result = sut.sendValidationCode(faker.internet().emailAddress());
 
         assertInstanceOf(SentValidationCodeResponseDto.class, result);
     }

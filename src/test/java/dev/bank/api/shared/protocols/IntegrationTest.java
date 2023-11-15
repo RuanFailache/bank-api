@@ -1,4 +1,4 @@
-package dev.bank.api.protocols;
+package dev.bank.api.shared.protocols;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;
