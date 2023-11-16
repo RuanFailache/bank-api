@@ -1,8 +1,7 @@
 package dev.bank.api.modules.account.infra.docs;
 
+import dev.bank.api.core.dtos.HttpRequestExceptionDto;
 import dev.bank.api.core.exceptions.HttpRequestException;
-import dev.bank.api.core.exceptions.NotFoundException;
-import dev.bank.api.core.exceptions.UnauthorizedException;
 import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
 import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.mail.internet.AddressException;
 import org.springframework.http.ResponseEntity;
 
 @Tag(name = "Routes related to authentication requests")
@@ -31,7 +29,10 @@ public interface AuthenticationControllerDocs {
                     @ApiResponse(
                             responseCode = "400",
                             description = "Provided DTO is invalid",
-                            content = @Content()
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HttpRequestExceptionDto.class)
+                            )
                     )
             }
     )
@@ -51,7 +52,26 @@ public interface AuthenticationControllerDocs {
                     @ApiResponse(
                             responseCode = "400",
                             description = "Provided DTO is invalid",
-                            content = @Content()
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HttpRequestExceptionDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "401",
+                            description = "Code is incorrect",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HttpRequestExceptionDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Validation request not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HttpRequestExceptionDto.class)
+                            )
                     )
             }
     )

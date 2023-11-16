@@ -21,10 +21,6 @@ spring:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
 
-server:
-  error:
-    include-stacktrace: never
-
 springdoc:
   swagger-ui:
     path: /docs

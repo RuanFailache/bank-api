@@ -18,9 +18,7 @@ import dev.bank.api.modules.account.infra.database.repositories.ValidationCodeRe
 import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -98,7 +96,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return Credentials of the created session
      *
      * @throws NotFoundException : When the validation request is not found
-     * @throws Unauthorized : When the code is invalid
+     * @throws UnauthorizedException : When the code is invalid
      */
     public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) throws HttpRequestException {
         UUID castedIdValidationRequest = UUID.fromString(idValidationRequest);
