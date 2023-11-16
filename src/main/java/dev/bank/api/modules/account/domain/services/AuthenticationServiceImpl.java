@@ -103,9 +103,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         ValidationCode validationCode = validationCodeRepository
                 .findById(castedIdValidationRequest)
-                .orElseThrow(() -> new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException("Validation request not found"));
 
-        if (!validationCode.getCode().equals(code)) throw new UnauthorizedException("");
+        if (!validationCode.getCode().equals(code)) {
+            throw new UnauthorizedException("Validation code is incorrect");
+        }
 
         return null;
     }

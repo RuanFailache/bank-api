@@ -59,7 +59,7 @@ public interface AuthenticationControllerDocs {
                     ),
                     @ApiResponse(
                             responseCode = "401",
-                            description = "Code is incorrect",
+                            description = "Validation code is incorrect",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = HttpRequestExceptionDto.class)
