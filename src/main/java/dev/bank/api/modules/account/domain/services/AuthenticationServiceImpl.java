@@ -42,17 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     /**
-     * Generates a random code with 6 digits
-     *
-     * @return generated code
-     */
-    private String generateRandomCode() {
-        Random random = new Random();
-        int number = random.nextInt(999999);
-        return String.format("%06d", number);
-    }
-
-    /**
      * Validate if the provided email has an account.
      * - In the case where an account already exists, a validation code will be sent via email to be used at next authentication step.
      * - In the case where an account doesn't exist, an account will be created, and an email with the same content will be sent.
@@ -71,7 +60,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return accountRepository.save(model);
         });
 
-        String generatedCode = generateRandomCode();
+        Random random = new Random();
+        int number = random.nextInt(999999);
+        String generatedCode = String.format("%06d", number);
 
         ValidationCode model = new ValidationCode();
         model.setCode(generatedCode);

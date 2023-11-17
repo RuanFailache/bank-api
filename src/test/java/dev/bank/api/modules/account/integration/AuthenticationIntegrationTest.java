@@ -1,9 +1,7 @@
 package dev.bank.api.modules.account.integration;
 
 import dev.bank.api.shared.protocols.IntegrationTest;
-import dev.bank.api.modules.account.application.dtos.CredentialsResponseDto;
 import dev.bank.api.modules.account.application.dtos.SendValidationCodeRequestDto;
-import dev.bank.api.modules.account.application.dtos.SentValidationCodeResponseDto;
 import dev.bank.api.modules.account.application.dtos.ValidateCodeRequestDto;
 import dev.bank.api.modules.account.application.services.AuthenticationService;
 import org.junit.jupiter.api.DisplayName;
@@ -13,17 +11,13 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthenticationIntegrationTest extends IntegrationTest {
     @Autowired
-    private JacksonTester<CredentialsResponseDto> credentialsResponseDtoJson;
-
-    @Autowired
     private JacksonTester<SendValidationCodeRequestDto> sendValidationCodeRequestDtoJson;
-
-    @Autowired
-    private JacksonTester<SentValidationCodeResponseDto> sentValidationCodeResponseDtoJson;
 
     @Autowired
     private JacksonTester<ValidateCodeRequestDto> validateCodeRequestDtoJson;
@@ -42,7 +36,7 @@ public class AuthenticationIntegrationTest extends IntegrationTest {
 
         var response = post("/auth/send", requestBodyAsJson);
 
-        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 
     @Test
@@ -56,7 +50,21 @@ public class AuthenticationIntegrationTest extends IntegrationTest {
 
         var response = post("/auth/send", requestBodyAsJson);
 
-        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Should ensure '/auth/send' returns HttpStatus 201 on success")
+    public void testPostAuthSend() throws Exception {
+        var requestBody = new SendValidationCodeRequestDto(
+                faker.internet().emailAddress()
+        );
+
+        var requestBodyAsJson = sendValidationCodeRequestDtoJson.write(requestBody).getJson();
+
+        var response = post("/auth/send", requestBodyAsJson);
+
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 
     @Test
@@ -71,7 +79,7 @@ public class AuthenticationIntegrationTest extends IntegrationTest {
 
         var response = post("/auth/validate", requestBodyAsJson);
 
-        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
     }
 
     @Test
@@ -86,6 +94,21 @@ public class AuthenticationIntegrationTest extends IntegrationTest {
 
         var response = post("/auth/validate", requestBodyAsJson);
 
-        assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Should ensure '/auth/validate' returns HttpStatus 201 with correct body")
+    public void testPostAuthValidate_When_ValidationRequestNotFound() throws Exception {
+        var requestBody = new ValidateCodeRequestDto(
+                UUID.randomUUID().toString(),
+                faker.number().digits(6)
+        );
+
+        var requestBodyAsJson = validateCodeRequestDtoJson.write(requestBody).getJson();
+
+        var response = post("/auth/validate", requestBodyAsJson);
+
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 }
