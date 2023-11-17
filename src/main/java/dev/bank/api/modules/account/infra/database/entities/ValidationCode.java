@@ -18,7 +18,7 @@ public class ValidationCode {
     @Column(name = "TVC_ID")
     private UUID id;
 
-    @Column(name = "TVC_CODE")
+    @Column(name = "TVC_CODE", nullable = false)
     private String code;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,9 +45,9 @@ public class ValidationCode {
         boolean isExpiresAtNullable = isNull(expiresAt);
 
         if (isExpiresAtNullable) {
-            long TWO_HOURS = 2 * 60 * 60;
+            long FIVE_MINUTES = 5 * 60 * 1000;
             long createdAtTime = createdAt.getTime();
-            expiresAt = new Date(createdAtTime + TWO_HOURS);
+            expiresAt = new Date(createdAtTime + FIVE_MINUTES);
         }
     }
 }

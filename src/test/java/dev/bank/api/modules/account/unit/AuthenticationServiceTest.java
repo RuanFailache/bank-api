@@ -18,8 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,6 +128,28 @@ public class AuthenticationServiceTest {
             fail("Should throws NotFoundException");
         } catch (Exception e) {
             assertInstanceOf(NotFoundException.class, e);
+        }
+    }
+
+    @Test
+    @DisplayName("Should ensure 'validateAuthenticationCode' throws UnauthorizedException when request is expired")
+    void testValidateAuthenticationCode_When_RequestIsExpired() {
+        UUID fakeId = UUID.randomUUID();
+        String fakeCode = faker.number().digits(6);
+        Date fakeExpiresAt = faker.date().past(1, TimeUnit.HOURS);
+
+        ValidationCode validationCode = new ValidationCode();
+        validationCode.setId(fakeId);
+        validationCode.setCode(fakeCode);
+        validationCode.setExpiresAt(fakeExpiresAt);
+
+        doReturn(Optional.of(validationCode)).when(validationCodeRepository).findById(fakeId);
+
+        try {
+            sut.validateAuthenticationCode(fakeId.toString(), fakeCode);
+            fail("Should throws UnauthorizedException");
+        } catch (Exception e) {
+            assertInstanceOf(UnauthorizedException.class, e);
         }
     }
 

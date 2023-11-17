@@ -19,6 +19,9 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -87,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @return Credentials of the created session
      *
      * @throws NotFoundException : When the validation request is not found
-     * @throws UnauthorizedException : When the code is invalid
+     * @throws UnauthorizedException : When the request is expired or the code is invalid
      */
     public CredentialsResponseDto validateAuthenticationCode(String idValidationRequest, String code) throws HttpRequestException {
         UUID castedIdValidationRequest = UUID.fromString(idValidationRequest);
@@ -95,6 +98,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ValidationCode validationCode = validationCodeRepository
                 .findById(castedIdValidationRequest)
                 .orElseThrow(() -> new NotFoundException("Validation request not found"));
+
+        if (validationCode.getExpiresAt().before(Date.from(Instant.now()))) {
+            throw new UnauthorizedException("Validation code is expired");
+        }
 
         if (!validationCode.getCode().equals(code)) {
             throw new UnauthorizedException("Validation code is incorrect");
