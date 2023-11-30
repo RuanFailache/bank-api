@@ -1,6 +1,6 @@
 package dev.bank.api.core.config;
 
-import dev.bank.api.core.dtos.HttpRequestExceptionDto;
+import dev.bank.api.shared.dtos.HttpRequestExceptionDto;
 import dev.bank.api.core.exceptions.HttpRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
