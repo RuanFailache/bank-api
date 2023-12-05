@@ -1,9 +1,9 @@
 package dev.bank.api.core.controllers;
 
 import dev.bank.api.config.test.IntegrationTest;
+import dev.bank.api.modules.validationcode.SendValidationCodeRequestDto;
+import dev.bank.api.modules.validationcode.ValidateCodeRequestDto;
 import dev.bank.api.modules.validationcode.ValidationCodeService;
-import dev.bank.api.modules.validationcode.dto.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,7 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
 
 public class AuthenticationIntegrationTest extends IntegrationTest {
     @Autowired

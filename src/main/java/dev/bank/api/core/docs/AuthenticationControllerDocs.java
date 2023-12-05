@@ -1,10 +1,10 @@
 package dev.bank.api.core.docs;
 
 import dev.bank.api.core.exceptions.HttpRequestException;
-import dev.bank.api.modules.session.dto.SessionCredentialsResponseDto;
-import dev.bank.api.modules.validationcode.dto.SendValidationCodeRequestDto;
-import dev.bank.api.modules.validationcode.dto.SentValidationCodeResponseDto;
-import dev.bank.api.modules.validationcode.dto.ValidateCodeRequestDto;
+import dev.bank.api.modules.session.SessionCredentialsResponseDto;
+import dev.bank.api.modules.validationcode.SendValidationCodeRequestDto;
+import dev.bank.api.modules.validationcode.SentValidationCodeResponseDto;
+import dev.bank.api.modules.validationcode.ValidateCodeRequestDto;
 import dev.bank.api.shared.dtos.HttpRequestExceptionDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

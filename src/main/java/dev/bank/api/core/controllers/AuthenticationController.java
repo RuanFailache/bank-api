@@ -2,11 +2,11 @@ package dev.bank.api.core.controllers;
 
 import dev.bank.api.core.docs.AuthenticationControllerDocs;
 import dev.bank.api.core.exceptions.HttpRequestException;
-import dev.bank.api.modules.session.dto.SessionCredentialsResponseDto;
+import dev.bank.api.modules.session.SessionCredentialsResponseDto;
 import dev.bank.api.modules.validationcode.ValidationCodeService;
-import dev.bank.api.modules.validationcode.dto.SendValidationCodeRequestDto;
-import dev.bank.api.modules.validationcode.dto.SentValidationCodeResponseDto;
-import dev.bank.api.modules.validationcode.dto.ValidateCodeRequestDto;
+import dev.bank.api.modules.validationcode.SendValidationCodeRequestDto;
+import dev.bank.api.modules.validationcode.SentValidationCodeResponseDto;
+import dev.bank.api.modules.validationcode.ValidateCodeRequestDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

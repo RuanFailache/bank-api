@@ -1,6 +1,5 @@
-package dev.bank.api.modules.session.dto;
+package dev.bank.api.modules.session;
 
-import dev.bank.api.modules.session.Session;
 import lombok.Data;
 
 @Data

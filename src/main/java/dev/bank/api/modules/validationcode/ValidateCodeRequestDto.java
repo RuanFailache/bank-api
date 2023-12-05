@@ -1,4 +1,4 @@
-package dev.bank.api.modules.validationcode.dto;
+package dev.bank.api.modules.validationcode;
 
 import jakarta.validation.constraints.NotBlank;
 

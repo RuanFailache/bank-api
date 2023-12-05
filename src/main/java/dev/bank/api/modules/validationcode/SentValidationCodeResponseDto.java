@@ -1,6 +1,5 @@
-package dev.bank.api.modules.validationcode.dto;
+package dev.bank.api.modules.validationcode;
 
-import dev.bank.api.modules.validationcode.ValidationCode;
 import lombok.Data;
 
 @Data
